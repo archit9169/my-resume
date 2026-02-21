@@ -1,0 +1,11 @@
+---
+layout: null
+---
+
+{% assign active = site.data.active-resume %}
+{% assign resume = site.data.resumes[active.resume] %}
+
+<link rel="stylesheet" href="/assets/css/base.css">
+<link rel="stylesheet" href="/assets/themes/theme-{{ active.theme }}.css">
+
+{% include resume-layouts/layout-{{ active.layout }}.html %}
