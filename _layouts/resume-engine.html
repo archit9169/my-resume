@@ -5,24 +5,22 @@ layout: null
 {% assign active = site.data.active-resume %}
 {% assign resume = site.data.resumes[active.resume] %}
 
-<link rel="stylesheet" href="/assets/css/base.css">
-<link rel="stylesheet" href="/assets/themes/theme-{{ active.theme }}.css">
-<link rel="stylesheet" href="/assets/css/print.css" media="print">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ resume.basics.name }}</title>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const link = document.getElementById("pdfDownload");
+  <link rel="stylesheet" href="{{ '/assets/css/base.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/print.css' | relative_url }}" media="print">
+  <link rel="stylesheet" href="{{ '/assets/themes/theme-' | append: active.theme | append: '.css' | relative_url }}">
 
-  fetch(link.href, { method: "HEAD" })
-    .then(res => {
-      if (res.ok) {
-        link.style.display = "inline-block";
-      }
-    })
-    .catch(() => {
-      // File not present — keep it hidden, no error
-    });
-});
-</script>
+  <script src="{{ '/assets/js/pdf-download.js' | relative_url }}" defer></script>
+</head>
 
-{% include resume-layouts/layout-{{ active.layout }}.html %}
+<body>
+
+  {% include resume-layouts/layout-{{ active.layout }}.html %}
+
+</body>
+</html>
