@@ -4,19 +4,58 @@ on:
   workflow_dispatch:
 
 jobs:
-  pdf:
+  build-pdf:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
       - name: Install Puppeteer
         run: npm install puppeteer
+
       - name: Build Jekyll site
         uses: actions/jekyll-build-pages@v1
-      - name: Generate PDF
+
+      - name: Generate PDF from HTML
         run: |
-          npx puppeteer print-pdf _site/index.html assets/resume.pdf
-      - uses: actions/upload-artifact@v3
-        with:
-          name: resume
-          path: assets/resume.pdf
+          node <<EOF
+          const puppeteer = require("puppeteer");
+
+          (async () => {
+            const browser = await puppeteer.launch();
+            const page = await browser.newPage();
+
+            await page.goto("file://" + process.cwd() + "/_site/index.html", {
+              waitUntil: "networkidle0",
+            });
+
+            await page.pdf({
+              path: "_site/resume.pdf",
+              format: "A4",
+              printBackground: true,
+              margin: {
+                top: "14mm",
+                bottom: "14mm",
+                left: "14mm",
+                right: "14mm",
+              },
+            });
+
+            await browser.close();
+          })();
+          EOF
+
+      - name: Commit PDF
+        run: |
+          cp _site/resume.pdf resume.pdf
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add resume.pdf
+          git commit -m "Update resume PDF" || echo "No changes"
+          git push

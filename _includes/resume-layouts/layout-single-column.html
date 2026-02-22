@@ -1,5 +1,18 @@
 <div class="page">
 
+  <div class="no-print actions">
+    <a id="pdfDownload"
+      href="/resume.pdf"
+      download
+      style="display:none;">
+      ⬇ Download PDF
+    </a>
+
+    <button onclick="window.print()">
+      🖨 Print / Save as PDF
+    </button>
+  </div>
+
   <h1>{{ resume.basics.name }}</h1>
   <div class="contact">
     {{ resume.basics.email }} | {{ resume.basics.phone }} |

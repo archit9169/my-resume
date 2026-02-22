@@ -1,9 +1,28 @@
-# My Resume (Work In Progress)
 
-## Directory Structure
+# My Resume — YAML Driven Rendering System
 
+A config-driven resume platform built on Jekyll.
+
+Single source → multiple outputs  
+(YAML → Web → Print → PDF)
+
+---
+
+## ✨ Core Principles
+
+- Single source of truth → YAML
+- Single layout → all output formats
+- No binary artifacts in repository
+- Runtime-safe on static hosting
+- Configurable for multi-resume future
+
+---
+
+# 📂 Directory Structure
+
+```
 my-resume/
-│── _config.yml                      ← Jekyll build configuration
+│── _config.yml                     ← Jekyll build configuration
 │
 │── _data/
 │   ├── active-resume.yml           ← runtime switchboard (resume/layout/theme)
@@ -17,50 +36,185 @@ my-resume/
 │
 │── _includes/
 │   └── resume-layouts/
-│       ├── layout-single-column.html
-│       └── layout-two-column.html
+│       ├── layout-single-column.html           ← current active visual layout
+│       └── layout-two-column.html              ← future variant
 │
 │── assets/
 │   ├── css/
 │   │   └── base.css                ← typography + layout system
+│   │   └── print.css
 │   │
 │   └── themes/
-│       ├── theme-modern.css       ← active visual theme
-│       └── theme-classic.css      ← future theme
+│       ├── theme-modern.css        ← current active visual theme
+│       └── theme-classic.css       ← future variant
 │
 │── index.md                        ← entry point (routes to engine)
 │
 └── .github/workflows/
-    └── build-resume-pdf.yml       ← manual PDF generator
+    └── build-resume-pdf.yml        ← PDF generator pipeline
 
-## Architecture Overview:
+```
 
-Content layer:
+---
+
+# 🧠 Architecture
+
+## 1️⃣ Content Layer
+
 _data/resumes/
-- role-based resume variants (Cerner L3, consulting, compact)
+- Role-based resume variants (Cerner L3, consulting, compact).
+- Pure structured data — no layout logic.
 
-Control layer:
+## 2️⃣ Control Layer
+
 _data/active-resume.yml
-- selects active resume, layout, and theme
+- Selects active resume, layout, and theme.
+- No code changes required to switch output.
 
-Render engine:
+## 3️⃣ Render Engine
+
 _layouts/resume-engine.html
-- loads active configuration
-- injects selected content
-- applies selected layout
-- attaches theme
+- Responsible for:
+    - loading active configuration
+    - injecting selected content
+    - applying selected layout
+    - attaching theme and print/pdf stuff
+- Acts as the system controller.
 
-Layout strategies:
+## 4️⃣ Layout Layer
+
 _includes/resume-layouts/
-- single-column
-- two-column (future)
+- Pure HTML structure.
+    - single-column layout
+    - two-column layout (future variants)
+- No content knowledge.
 
-Styling system:
+## 5️⃣ Styling Layer
+
+- Visual styling only.
+- Layout-agnostic.
+
 assets/css/base.css
 - typography and spacing
 
 assets/themes/
 - switchable visual themes
 
-Entry point:
-index.md → routes through resume engine
+---
+
+# 🖥 Output Modes
+
+## 🌐 Web View
+
+Rendered by Jekyll → GitHub Pages.
+
+---
+
+## 🖨 Print / Save as PDF
+
+Triggered by: `window.print()`
+
+Uses: `assets/css/print.css`
+
+Ensures:
+- A4 sizing
+- clean pagination
+- UI controls hidden
+
+---
+
+## 📄 Future Build-Generated PDF
+
+Will reuse the same HTML + print CSS.
+
+No layout duplication required.
+
+---
+
+# ⬇ PDF Access (Runtime Safe)
+
+Header provides:
+
+- Download PDF → shown only if file exists
+- Print / Save as PDF → always available
+
+The download button:
+
+- auto-detects `/resume.pdf`
+- never throws errors on static hosting
+
+---
+
+# 🛠 Local Development
+
+```bash
+bundle exec jekyll serve
+```
+
+Open:
+
+http://localhost:4000
+
+---
+
+# ✏ Updating Resume Content
+
+Edit:
+
+`_data/resumes/cerner-l3.yml`
+
+Commit & push → site rebuilds automatically.
+
+---
+
+# 🔮 Planned: Resume Deployment Pipeline
+
+Future GitHub Actions flow:
+
+```
+build site
+→ generate PDF from HTML
+→ deploy together
+```
+
+No PDF stored in repository.
+
+---
+
+# 🚀 System Evolution
+
+**v1 — Resume Engine**
+
+- Config-driven rendering
+- Data / layout / theme separation
+- Multi-variant ready architecture
+
+**v2 — Output System**
+
+- Print stylesheet for A4 export
+- Runtime-safe PDF controls
+- Web ↔ Print parity
+
+**v3 — Deployment Pipeline (planned)**
+
+- HTML → PDF during build
+- Artifact-based Pages deployment
+- Zero binary commits
+
+---
+
+# 🎯 Long-Term Vision
+
+This repository is not just a resume.
+
+It is a:
+
+Config-driven content rendering system  
+capable of:
+
+- multiple resume variants
+- multiple layouts
+- multiple themes
+- multiple output formats
+
+from a single structured data source.

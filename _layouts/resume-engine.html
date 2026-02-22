@@ -7,5 +7,22 @@ layout: null
 
 <link rel="stylesheet" href="/assets/css/base.css">
 <link rel="stylesheet" href="/assets/themes/theme-{{ active.theme }}.css">
+<link rel="stylesheet" href="/assets/css/print.css" media="print">
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const link = document.getElementById("pdfDownload");
+
+  fetch(link.href, { method: "HEAD" })
+    .then(res => {
+      if (res.ok) {
+        link.style.display = "inline-block";
+      }
+    })
+    .catch(() => {
+      // File not present — keep it hidden, no error
+    });
+});
+</script>
 
 {% include resume-layouts/layout-{{ active.layout }}.html %}
