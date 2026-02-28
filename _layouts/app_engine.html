@@ -20,7 +20,7 @@ layout: null
   <script src="{{ '/assets/js/app_ui.js' | relative_url }}" defer></script>
 
   <!-- Template Theme -->
-  {{ page.head_extra }}
+  {{ page.temp_theme }}
 
   <!-- TEMPLATE REGISTRY FOR RUNTIME -->
   <script>
@@ -40,7 +40,7 @@ layout: null
 
   {% include app_bar.html %}
 
-  {{ content }}
+  {{ page.temp_layout }}
 
 </body>
 </html>

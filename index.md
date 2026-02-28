@@ -3,9 +3,11 @@ layout: app_engine
 permalink: /
 ---
 
-{% capture page_theme %}
+{% capture temp_theme %}
 <link rel="stylesheet"
       href="{{ '/assets/themes/classic.css' | relative_url }}">
 {% endcapture %}
 
+{% capture temp_layout %}
 {% include layouts/classic.html %}
+{% endcapture %}
