@@ -2,7 +2,8 @@
 layout: null
 ---
 
-
+{% assign app = site.data.app_config %}
+{% assign resume = site.data.resumes[app.default_resume] %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,10 +16,10 @@ layout: null
   <link rel="stylesheet" href="{{ '/assets/css/base.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/app_bar.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/print.css' | relative_url }}" media="print">
-  <script src="{{ '/assets/js/app_ui.js' | relative_url }}" defer></script>
 
   <!-- Template Theme -->
   {{ page.temp_theme }}
+  {{ page_theme }}
 
   <!-- TEMPLATE REGISTRY FOR RUNTIME -->
   <script>
@@ -31,6 +32,8 @@ layout: null
       {% endfor %}
     };
   </script>
+
+  <script src="{{ '/assets/js/app_ui.js' | relative_url }}" defer></script>
 
 </head>
 
