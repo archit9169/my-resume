@@ -1,152 +1,58 @@
-## My Resume — YAML Driven Rendering System
+## My Resume — Data-First Resume System (Jekyll + YAML)
 
-A config-driven resume platform built on Jekyll.
+A system for rendering structured resume data through interchangeable templates.
 
-Single source → multiple outputs  
-(YAML → Web → Print → PDF)
+Write your resume once in YAML → render it with multiple templates → export the same output to web and PDF.
 
-### ✨ Core Principles
+Single source → multiple outputs (YAML → Web → Print → PDF)
 
-- Single source of truth → YAML
-- Single layout → all output formats
-- No binary artifacts in repository
-- Runtime-safe on static hosting
-- Configurable for multi-resume future
+## ✨ Core Principles
 
-### ✏ Updating Resume Content
+- **Single Source Content Model**  
+  Resume data is independent of layout and format, and the same content powers every template and output.
 
-Edit:
+- **Config-Driven Variant Selection**  
+  A central configuration selects the default active resume and template, while allowing multiple resume versions to coexist.
 
-`_data/resumes/cerner-l3.yml`
+- **Composable Template Architecture**  
+  Layout and theme combine to render the same data in different visual designs without altering the content.
 
-Commit & push → site rebuilds automatically.
+- **Web ↔ Print Output Parity**  
+  The same HTML produces both the live site and the PDF output.
 
-### 🛠 Local Development
+- **Artifact-Free Static Deployment**  
+  Build outputs are generated at deploy time and the system runs fully on GitHub Pages without a backend.
 
-```
-bash
-bundle exec jekyll serve
-```
+## 🚀 Getting Started
 
-Open: http://localhost:4000
+1️⃣ Fork the repository → Enable gitHub pages.
 
----
+2️⃣ Add your resume like `_data/resumes/my-resume.yml`
 
-## 📂 Directory Structure
+3️⃣ Set your default active resume & template in `_data/app_config.yml`
 
-```
-my-resume/
-│── _config.yml                     ← Jekyll build configuration
-│
-│── _data/
-│   ├── active-resume.yml           ← runtime switchboard (resume/layout/theme)
-│   └── resumes/
-│       ├── cerner-l3.yml           ← primary resume content
-│       ├── consulting.yml          ← future variant
-│       └── compact.yml             ← future variant
-│
-│── _layouts/
-│   └── resume-engine.html          ← universal render controller
-│
-│── _includes/
-│   └── resume-layouts/
-│       ├── layout-single-column.html           ← current active visual layout
-│       └── layout-two-column.html              ← future variant
-│
-│── assets/
-│   ├── css/
-│   │   └── base.css                ← typography + layout system
-│   │   └── print.css
-│   │
-│   └── themes/
-│       ├── theme-modern.css        ← current active visual theme
-│       └── theme-classic.css       ← future variant
-│
-│── index.md                        ← entry point (routes to engine)
-│
-└── .github/workflows/
-    └── build-resume-pdf.yml        ← PDF generator pipeline
+````yaml
+default_resume: my-resume
+default_template: classic
+````
 
-```
+4️⃣ Commit & push → Github site rebuilds automatically.
 
-## 🧠 Architecture
+🖨 Export to PDF → Print and then save as pdf.
 
-### 1️⃣ Content Layer
+## 📚 Documentation
 
-_data/resumes/
-- Role-based resume variants (Cerner L3, consulting, compact).
-- Pure structured data — no layout logic.
-
-### 2️⃣ Control Layer
-
-_data/active-resume.yml
-- Selects active resume, layout, and theme.
-- No code changes required to switch output.
-
-### 3️⃣ Render Engine
-
-_layouts/resume-engine.html
-- Responsible for:
-    - loading active configuration
-    - injecting selected content
-    - applying selected layout
-    - attaching theme and print/pdf stuff
-- Acts as the system controller.
-
-### 4️⃣ Layout Layer
-
-_includes/resume-layouts/
-- Pure HTML structure.
-    - single-column layout
-    - two-column layout (future variants)
-- No content knowledge.
-
-### 5️⃣ Styling Layer
-
-- Visual styling only.
-- Layout-agnostic.
-
-assets/css/base.css
-- typography and spacing
-
-assets/themes/
-- switchable visual themes
-
-## 🖥 Output Modes
-
-### 🌐 Web View
-
-Rendered by Jekyll → GitHub Pages.
-
-### 🖨 Print / Save as PDF
-
-Triggered by: `window.print()`
-
-Uses: `assets/css/print.css`
-
-Ensures:
-- A4 sizing
-- clean pagination
-- UI controls hidden
-
-### 📄 Future Build-Generated PDF
-
-Will reuse the same HTML + print CSS.
-No layout duplication required.
-
-### ⬇ PDF Access (Runtime Safe)
-
-Header provides:
-- Download PDF → shown only if file exists
-- Print / Save as PDF → always available
-
-The download button:
-- auto-detects `/resume.pdf`
-- never throws errors on static hosting
+- [Overview](docs/OVERVIEW.md)
+- [Architecture](docs/ARCHITECTURE.md)
+  - [Request → Rendering Flow](docs/architecture/RENDERING_FLOW.md)
+  - [File and Directory Structure](docs/architecture/DIRECTORY_STRUCTURE.md)
+- [Templates, Layouts & Themes](docs/TEMPLATES.md)
+- [Resume Content](docs/RESUMES.md)
 
 ---
 
 ## Work In Progress
+
 ### 🔮 Planned: Resume Deployment Pipeline
 
 Future GitHub Actions flow:
@@ -161,36 +67,33 @@ No PDF stored in repository.
 
 ### 🚀 System Evolution
 
-**v1 — Resume Engine**
+**v1 — Data-First Content Model**
 
-- Config-driven rendering
-- Data / layout / theme separation
-- Multi-variant ready architecture
+- Structured YAML as the single source of truth
+- Config-driven default rendering
+- Multiple resume variants
+- Template-based presentation
 
-**v2 — Output System**
+**v2 — Unified Output Pipeline**
 
 - Print stylesheet for A4 export
+- Web ↔ print layout parity
 - Runtime-safe PDF controls
-- Web ↔ Print parity
 
-**v3 — Deployment Pipeline (planned)**
+**v3 — Artifact-Free Deployment Pipeline**
 
 - HTML → PDF during build
-- Artifact-based Pages deployment
+- Artifact-based GitHub Pages deployment
 - Zero binary commits
 
 ### 🎯 Long-Term Vision
 
-This repository is not just a resume.
+At its core, this is a **data-first content rendering system** for static hosting, where structured content is authored once and transformed through a unified pipeline.
 
-It is a:
+It is capable of:
 
-Config-driven content rendering system  
-capable of:
+- storing multiple resume variants  
+- rendering them through multiple templates  
+- exporting them to multiple output formats  
 
-- multiple resume variants
-- multiple layouts
-- multiple themes
-- multiple output formats
-
-from a single structured data source.
+from a single structured data source — without changing the content model and without duplicating content or presentation logic.

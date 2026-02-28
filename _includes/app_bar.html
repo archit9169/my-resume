@@ -1,0 +1,45 @@
+<div class="app-bar no-print">
+
+  <div class="app-bar-left">
+
+    <div class="template-switcher">
+
+      {% assign default_template = site.data.app_config.default_template %}
+      {% assign current_template = page.name | default: default_template %}
+
+      {% for t in site.templates %}
+
+        <a href="?template={{ t.name }}"
+           class="template-btn{% if t.name == current_template %} active{% endif %}"
+           data-template="{{ t.name }}">
+
+           {{ t.name }}
+
+           {% if t.name == default_template %}
+             <span class="default-badge">default</span>
+           {% endif %}
+
+        </a>
+
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+  <div class="app-bar-right">
+
+    <a id="pdfDownload"
+       href="{{ '/resume.pdf' | relative_url }}"
+       download
+       style="display:none;">
+       ⬇ Download PDF
+    </a>
+
+    <button id="printBtn">
+      🖨 Print / Save as PDF
+    </button>
+
+  </div>
+
+</div>

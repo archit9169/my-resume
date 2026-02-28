@@ -1,43 +1,93 @@
+:root {
+
+  /* ========= TYPOGRAPHY ========= */
+
+  --font-body: Calibri, Arial, sans-serif;
+  --font-heading: Calibri, Arial, sans-serif;
+
+  --font-size-base: 14px;
+  --line-height-base: 1.45;
+
+  --font-size-h1: 26px;
+  --font-size-h2: 16px;
+
+  /* ========= COLORS ========= */
+
+  --color-text: #111;
+  --color-accent: #000;
+  --color-muted: #555;
+
+  /* ========= SPACING ========= */
+
+  --space-page-top: 40px;
+  --space-section-top: 26px;
+  --space-item-top: 14px;
+  --space-tight: 6px;
+
+  /* ========= BORDERS ========= */
+
+  --border-strong: 2px;
+
+}
+
+/* ========= BASE ========= */
+
 body {
-  font-family: Calibri, Arial, sans-serif;
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text);
   background: #fff;
 }
 
+/* ========= PAGE WRAPPER ========= */
+
 .page {
   max-width: 900px;
-  margin: 40px auto;
+  margin: var(--space-page-top) auto;
+}
+
+/* ========= HEADER ========= */
+
+h1 {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h1);
+  margin-bottom: var(--space-tight);
 }
 
 .contact {
   text-align: center;
-  font-size: 14px;
+  font-size: 13px;
+  color: var(--color-muted);
 }
 
+/* ========= SECTION ========= */
+
 h2 {
-  border-bottom: 2px solid #000;
-  padding-bottom: 4px;
-  margin-top: 28px;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-h2);
+  border-bottom: var(--border-strong) solid var(--color-accent);
+  padding-bottom: 3px;
+  margin-top: var(--space-section-top);
 }
+
+/* ========= SKILLS GRID ========= */
 
 .skill-row {
   display: grid;
   grid-template-columns: 220px 1fr;
-  margin-top: 6px;
+  margin-top: var(--space-tight);
 }
+
+/* ========= EXPERIENCE ========= */
 
 .job-header {
   display: flex;
   justify-content: space-between;
-  margin-top: 16px;
+  margin-top: var(--space-item-top);
 }
 
 .job-meta {
   text-align: right;
-}
-
-.actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-bottom: 10px;
+  color: var(--color-muted);
 }
