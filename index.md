@@ -11,6 +11,4 @@ permalink: /
       href="{{ '/assets/themes/classic.css' | relative_url }}">
 {% endcapture %}
 
-{% capture temp_layout %}
 {% include layouts/classic.html %}
-{% endcapture %}
