@@ -3,15 +3,8 @@ layout: null
 ---
 
 {% assign app = site.data.app_config %}
-
 {% assign resume = site.data.resumes[app.default_resume] %}
-{% assign template_name = page.name | default: app.default_template %}
 
-{% assign template =
-  site.templates
-  | where: "name", template_name
-  | first
-%}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,17 +13,14 @@ layout: null
   <meta charset="UTF-8">
   <title>{{ resume.basics.name }}</title>
 
-  <!-- BASE -->
+  <!-- Attach Global Assets -->
   <link rel="stylesheet" href="{{ '/assets/css/base.css' | relative_url }}">
-
-  <!-- THEME -->
-  <link rel="stylesheet"
-        href="{{ '/assets/themes/' | append: template.page_theme | append: '.css' | relative_url }}">
-
-  <!-- APP BAR CONTROLLER -->
   <link rel="stylesheet" href="{{ '/assets/css/app_bar.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/print.css' | relative_url }}" media="print">
   <script src="{{ '/assets/js/app_ui.js' | relative_url }}" defer></script>
+
+  <!-- Template Theme -->
+  {{ page.head_extra }}
 
   <!-- TEMPLATE REGISTRY FOR RUNTIME -->
   <script>
@@ -46,12 +36,11 @@ layout: null
 
 </head>
 
-<body data-layout="{{ template.page_layout }}"
-      data-theme="{{ template.page_theme }}">
+<body>
 
   {% include app_bar.html %}
 
-  {% include layouts/{{ template.page_layout }}.html %}
+  {% content %}
 
 </body>
 </html>

@@ -1,6 +1,10 @@
 ---
 layout: app_engine
-
-page_layout: classic
-page_theme: classic
 ---
+
+{% capture page_theme %}
+<link rel="stylesheet"
+      href="{{ '/assets/themes/classic.css' | relative_url }}">
+{% endcapture %}
+
+{% include layouts/classic.html %}
