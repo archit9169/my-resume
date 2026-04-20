@@ -1,0 +1,19 @@
+.page {
+
+  /* ========= COLORS ========= */
+
+  --color-text: #111;
+  --color-accent: #000;
+  --color-muted: #444;
+
+  /* ========= TYPOGRAPHY ========= */
+
+  --font-body: Calibri, Arial, sans-serif;
+  --font-heading: Calibri, Arial, sans-serif;
+
+  /* ========= SPACING TUNING ========= */
+
+  --space-section-top: 26px;
+  --space-item-top: 14px;
+
+}

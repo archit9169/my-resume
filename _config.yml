@@ -1,5 +1,6 @@
-title: Archit Resume
 markdown: kramdown
-theme: null
-baseurl: "/my-resume"
-url: "https://archit9169.github.io"
+
+collections:
+  templates:
+    output: true
+    permalink: /templates/:name/
