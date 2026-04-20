@@ -1,0 +1,22 @@
+name: Build Resume PDF
+
+on:
+  workflow_dispatch:
+
+jobs:
+  pdf:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Puppeteer
+        run: npm install puppeteer
+      - name: Build Jekyll site
+        uses: actions/jekyll-build-pages@v1
+      - name: Generate PDF
+        run: |
+          npx puppeteer print-pdf _site/index.html assets/resume.pdf
+      - uses: actions/upload-artifact@v3
+        with:
+          name: resume
+          path: assets/resume.pdf
