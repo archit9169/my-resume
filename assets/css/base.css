@@ -34,3 +34,10 @@ h2 {
 .job-meta {
   text-align: right;
 }
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 10px;
+}
