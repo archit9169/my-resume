@@ -1,0 +1,35 @@
+basics:
+  name: Archit Bajpai
+  title: Cerner Millennium L3 Production Support Engineer
+  email: archit9169@gmail.com
+  phone: XXXXXXXXXX
+  location: India
+  linkedin: linkedin.com/in/yourprofile
+
+summary: >
+  Cerner Millennium L3 Production Support Engineer with 5 years of experience
+  across healthcare and banking enterprise systems. Strong in root cause
+  analysis, application debugging, service restoration, and defect identification.
+
+skills:
+  - title: Cerner Millennium
+    items: [Win64 Registration, CCL, Supportal]
+
+  - title: Production Support
+    items:
+      - Incident Management
+      - Root Cause Analysis
+      - Service Restoration
+      - Application Debugging
+      - Defect Identification
+
+experience:
+  - company: Oracle Cerner
+    role: Production Software Engineer – L3
+    duration: Jun 2024 – Present
+    location: Bangalore, India
+    project: Millennium – Win64 Registration
+    points:
+      - L3 production support for critical incidents in US shift
+      - End-to-end RCA across application, database, and configuration layers
+      - Debugging .NET components and raising dev-ready JIRA defects
