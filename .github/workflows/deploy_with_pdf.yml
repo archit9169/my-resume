@@ -1,0 +1,66 @@
+name: Generate Resume PDF
+
+on:
+  workflow_dispatch:
+    inputs:
+      resume:
+        description: "Resume variant"
+        required: true
+        default: "default"
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Jekyll
+        run: gem install jekyll -v 4.3.3
+
+      - name: Build site
+        run: jekyll build --trace
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright
+        run: |
+          npm install -g playwright
+          playwright install chromium
+
+      - name: Generate PDF
+        run: |
+          node <<EOF
+          const { chromium } = require('playwright');
+
+          (async () => {
+            const browser = await chromium.launch();
+            const page = await browser.newPage();
+
+            const resume = "${{ github.event.inputs.resume }}";
+
+            const url =
+              "file://" +
+              process.cwd() +
+              "/_site/index.html?resume=" + resume;
+
+            await page.goto(url, { waitUntil: "networkidle" });
+
+            await page.pdf({
+              path: "resume-" + resume + ".pdf",
+              format: "A4",
+              printBackground: true
+            });
+
+            await browser.close();
+          })();
+          EOF
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: resume-pdf
+          path: resume-*.pdf

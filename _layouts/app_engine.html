@@ -5,7 +5,8 @@ layout: null
 {% assign app = site.data.app_config %}
 
 {% assign resume = site.data.resumes[app.default_resume] %}
-{% assign template_name = page.name | default: app.default_template %}
+
+{% assign template_name = page.page_name | default: app.default_template %}
 
 {% assign template =
   site.templates
@@ -22,6 +23,7 @@ layout: null
 
   <!-- BASE -->
   <link rel="stylesheet" href="{{ '/assets/css/base.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/print.css' | relative_url }}" media="print">
 
   <!-- THEME -->
   <link rel="stylesheet"
@@ -29,7 +31,6 @@ layout: null
 
   <!-- APP BAR CONTROLLER -->
   <link rel="stylesheet" href="{{ '/assets/css/app_bar.css' | relative_url }}">
-  <link rel="stylesheet" href="{{ '/assets/css/print.css' | relative_url }}" media="print">
   <script src="{{ '/assets/js/app_ui.js' | relative_url }}" defer></script>
 
   <!-- TEMPLATE REGISTRY FOR RUNTIME -->
