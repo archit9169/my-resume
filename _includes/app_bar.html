@@ -1,45 +1,77 @@
+{% assign _app_config = site.data.app_config %}
+{% assign _selected_template = _app_config.selected_template %}
+{% assign _template_settings = _app_config.templates | default: empty %}
+{% assign _pdf_download_enabled = _app_config.feature_flags.pdf_download_enabled | default: false %}
+{% assign _templates = site.templates | sort: "slug" %}
+{% if page.collection == "templates" %}
+  {% assign _current_template = page.slug %}
+{% else %}
+  {% assign _current_template = _selected_template %}
+{% endif %}
+{% assign _current_template_doc = _templates | where: "slug", _current_template | first %}
+{% assign _current_template_override = _template_settings[_current_template] %}
+{% if _current_template_override %}
+  {% assign _current_default_theme = _current_template_override.default_theme %}
+{% else %}
+  {% assign _current_default_theme = _current_template_doc.default_theme %}
+{% endif %}
+{% assign _current_theme = _current_default_theme | default: "base" %}
+
 <div class="app-bar no-print">
-
   <div class="app-bar-left">
+    <div class="template-switcher" aria-label="Template switcher">
+      {% for _template in _templates %}
+        {% assign _template_override = _template_settings[_template.slug] %}
+        {% if _template_override %}
+          {% assign _template_visible = _template_override.app_bar_enabled %}
+        {% else %}
+          {% assign _template_visible = _template.app_bar_enabled %}
+        {% endif %}
+        {% if _template_visible != false or _template.slug == _current_template %}
+          {% assign _template_label = _template.slug | replace: "-", " " %}
+          <a href="{{ _template.url | relative_url }}"
+             class="template-btn{% if _template.slug == _current_template %} active{% endif %}"
+             data-template="{{ _template.slug }}">
+            {{ _template_label }}
 
-    <div class="template-switcher">
-
-      {% assign default_template = site.data.app_config.default_template %}
-      {% assign current_template = page.name | default: default_template %}
-
-      {% for t in site.templates %}
-
-        <a href="?template={{ t.name }}"
-           class="template-btn{% if t.name == current_template %} active{% endif %}"
-           data-template="{{ t.name }}">
-
-           {{ t.name }}
-
-           {% if t.name == default_template %}
-             <span class="default-badge">default</span>
-           {% endif %}
-
+          {% if _template.slug == _selected_template %}
+            <span class="app-bar-badge">default</span>
+          {% endif %}
         </a>
-
+        {% endif %}
       {% endfor %}
-
     </div>
 
+    {% if _current_template_doc and _current_template_doc.themes != empty %}
+      <div class="theme-switcher" aria-label="Theme switcher">
+        <a href="{{ page.url | relative_url }}"
+           class="theme-btn{% if _current_theme == 'base' %} active{% endif %}"
+           data-theme="base">
+          Base
+        </a>
+
+        {% for _theme_slug in _current_template_doc.themes %}
+          <a href="{{ page.url | relative_url }}?theme={{ _theme_slug | uri_escape }}"
+             class="theme-btn{% if _theme_slug == _current_theme %} active{% endif %}"
+             data-theme="{{ _theme_slug }}">
+            {{ _theme_slug | replace: "-", " " }}
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
   </div>
 
   <div class="app-bar-right">
+    {% if _pdf_download_enabled %}
+      <a id="pdf-download"
+         href="{{ '/resume.pdf' | relative_url }}"
+         download>
+        Download PDF
+      </a>
+    {% endif %}
 
-    <a id="pdfDownload"
-       href="{{ '/resume.pdf' | relative_url }}"
-       download
-       style="display:none;">
-       ⬇ Download PDF
-    </a>
-
-    <button id="printBtn">
-      🖨 Print / Save as PDF
+    <button id="print-button" type="button">
+      Print / Save as PDF
     </button>
-
   </div>
-
 </div>

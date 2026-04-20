@@ -2,11 +2,6 @@ name: Generate Resume PDF
 
 on:
   workflow_dispatch:
-    inputs:
-      resume:
-        description: "Resume variant"
-        required: true
-        default: "default"
 
 jobs:
   build-pdf:
@@ -15,11 +10,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Jekyll
-        run: gem install jekyll -v 4.3.3
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2
+          bundler-cache: true
 
       - name: Build site
-        run: jekyll build --trace
+        run: bundle exec jekyll build --trace
 
       - name: Install Node
         uses: actions/setup-node@v4
@@ -28,8 +26,8 @@ jobs:
 
       - name: Install Playwright
         run: |
-          npm install -g playwright
-          playwright install chromium
+          npm install playwright
+          npx playwright install chromium
 
       - name: Generate PDF
         run: |
@@ -39,18 +37,12 @@ jobs:
           (async () => {
             const browser = await chromium.launch();
             const page = await browser.newPage();
-
-            const resume = "${{ github.event.inputs.resume }}";
-
-            const url =
-              "file://" +
-              process.cwd() +
-              "/_site/index.html?resume=" + resume;
+            const url = "file://" + process.cwd() + "/_site/index.html";
 
             await page.goto(url, { waitUntil: "networkidle" });
 
             await page.pdf({
-              path: "resume-" + resume + ".pdf",
+              path: "resume.pdf",
               format: "A4",
               printBackground: true
             });
@@ -63,4 +55,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: resume-pdf
-          path: resume-*.pdf
+          path: resume.pdf

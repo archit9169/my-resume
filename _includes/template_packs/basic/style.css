@@ -1,0 +1,83 @@
+body[data-template="basic"] {
+  --body-font-family: Calibri, Arial, sans-serif;
+  --heading-font-family: Calibri, Arial, sans-serif;
+  --body-font-size: 14px;
+  --body-line-height: 1.45;
+  --body-text-color: #111111;
+  --body-muted-color: #4d4d4d;
+  --body-background-color: #ffffff;
+  --accent-color: #000000;
+
+  --page-background-color: #ffffff;
+  --page-border-color: transparent;
+  --page-border-width: 0;
+  --page-border-radius: 0;
+  --page-shadow: 0 0 0 transparent;
+  --page-max-width: 900px;
+  --page-margin-top: 40px;
+  --page-margin-bottom: 48px;
+  --page-padding-block: 0;
+  --page-padding-inline: 0;
+
+  --body-padding-inline: 20px;
+  --body-padding-bottom: 40px;
+
+  --name-font-family: var(--heading-font-family);
+  --name-font-size: 26px;
+  --name-font-weight: 700;
+  --title-font-size: 14px;
+  --title-color: var(--body-muted-color);
+  --contact-font-size: 13px;
+  --contact-color: var(--body-muted-color);
+  --meta-font-size: 13px;
+
+  --header-gap: 8px;
+  --contact-row-gap: 4px;
+  --contact-separator-gap: 10px;
+
+  --section-gap: 26px;
+  --section-title-font-family: var(--heading-font-family);
+  --section-title-font-size: 16px;
+  --section-title-font-weight: 700;
+  --section-title-color: var(--accent-color);
+  --section-title-gap: 6px;
+  --section-title-padding-bottom: 3px;
+  --section-title-border-width: 2px;
+  --section-title-border-color: var(--section-title-color);
+
+  --summary-title-font-size: var(--section-title-font-size);
+  --summary-title-color: var(--section-title-color);
+  --summary-title-border-color: var(--section-title-border-color);
+
+  --skills-title-font-size: var(--section-title-font-size);
+  --skills-title-color: var(--section-title-color);
+  --skills-title-border-color: var(--section-title-border-color);
+  --skills-label-width: 220px;
+  --skills-column-gap: 18px;
+  --skills-row-gap: 6px;
+  --skills-label-font-weight: 700;
+
+  --experience-title-font-size: var(--section-title-font-size);
+  --experience-title-color: var(--section-title-color);
+  --experience-title-border-color: var(--section-title-border-color);
+  --experience-gap: 14px;
+  --experience-item-gap: 6px;
+  --experience-header-gap: 20px;
+  --experience-detail-gap: 2px;
+  --experience-company-font-weight: 700;
+  --experience-meta-font-size: var(--meta-font-size);
+  --experience-meta-color: var(--body-muted-color);
+  --experience-meta-align: right;
+  --experience-points-indent: 20px;
+  --experience-points-gap: 6px;
+
+  --accomplishments-title-font-size: var(--section-title-font-size);
+  --accomplishments-title-color: var(--section-title-color);
+  --accomplishments-title-border-color: var(--section-title-border-color);
+
+  --mobile-body-padding-inline: 14px;
+  --mobile-page-margin-top: 24px;
+  --mobile-page-margin-bottom: 32px;
+  --mobile-skills-row-gap: 2px;
+  --mobile-experience-header-gap: 6px;
+}

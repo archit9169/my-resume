@@ -33,9 +33,60 @@ jobs:
       - name: Install dependencies
         run: bundle install
 
+      - name: Read app config
+        id: app_config
+        run: |
+          ruby <<'RUBY'
+          require "yaml"
+
+          config = YAML.load_file("_data/app_config.yml") || {}
+          feature_flags = config["feature_flags"] || {}
+          pdf_download_enabled = feature_flags["pdf_download_enabled"] == true
+
+          File.open(ENV.fetch("GITHUB_OUTPUT"), "a") do |file|
+            file.puts("pdf_download_enabled=#{pdf_download_enabled}")
+          end
+          RUBY
+
       # Build site using bundled jekyll
       - name: Build site
         run: bundle exec jekyll build --trace
+
+      - name: Install Node
+        if: steps.app_config.outputs.pdf_download_enabled == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright
+        if: steps.app_config.outputs.pdf_download_enabled == 'true'
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Generate published PDF
+        if: steps.app_config.outputs.pdf_download_enabled == 'true'
+        run: |
+          node <<'EOF'
+          const path = require("path");
+          const { chromium } = require("playwright");
+
+          (async () => {
+            const browser = await chromium.launch();
+            const page = await browser.newPage();
+            const url = "file://" + path.join(process.cwd(), "_site", "index.html");
+
+            await page.goto(url, { waitUntil: "networkidle" });
+
+            await page.pdf({
+              path: path.join(process.cwd(), "_site", "resume.pdf"),
+              format: "A4",
+              printBackground: true
+            });
+
+            await browser.close();
+          })();
+          EOF
 
       # Upload static site as output
       - name: Upload Pages artifact

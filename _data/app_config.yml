@@ -1,2 +1,14 @@
-default_resume: cerner-l3
-default_template: classic
+selected_resume: cerner-l3
+selected_template: classic
+
+feature_flags:
+  pdf_download_enabled: false
+
+templates:
+  classic:
+    app_bar_enabled: true
+    default_theme: null
+
+  basic:
+    app_bar_enabled: false
+    default_theme: null
