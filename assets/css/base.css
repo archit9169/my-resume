@@ -1,0 +1,36 @@
+body {
+  font-family: Calibri, Arial, sans-serif;
+  background: #fff;
+}
+
+.page {
+  max-width: 900px;
+  margin: 40px auto;
+}
+
+.contact {
+  text-align: center;
+  font-size: 14px;
+}
+
+h2 {
+  border-bottom: 2px solid #000;
+  padding-bottom: 4px;
+  margin-top: 28px;
+}
+
+.skill-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  margin-top: 6px;
+}
+
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.job-meta {
+  text-align: right;
+}

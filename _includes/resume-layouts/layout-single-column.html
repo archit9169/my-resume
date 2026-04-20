@@ -1,0 +1,46 @@
+<div class="page">
+
+  <h1>{{ resume.basics.name }}</h1>
+  <div class="contact">
+    {{ resume.basics.email }} | {{ resume.basics.phone }} |
+    {{ resume.basics.linkedin }} | {{ resume.basics.location }}
+  </div>
+
+  <section>
+    <h2>Professional Summary</h2>
+    <p>{{ resume.summary }}</p>
+  </section>
+
+  <section>
+    <h2>Skills</h2>
+    {% for skill in resume.skills %}
+      <div class="skill-row">
+        <div class="skill-label">{{ skill.title }}</div>
+        <div>{{ skill.items | join: " • " }}</div>
+      </div>
+    {% endfor %}
+  </section>
+
+  <section>
+    <h2>Experience</h2>
+    {% for job in resume.experience %}
+      <div class="job-header">
+        <div>
+          <strong>{{ job.company }}</strong><br>
+          {{ job.role }}<br>
+          {{ job.project }}
+        </div>
+        <div class="job-meta">
+          {{ job.duration }}<br>
+          {{ job.location }}
+        </div>
+      </div>
+      <ul>
+        {% for p in job.points %}
+        <li>{{ p }}</li>
+        {% endfor %}
+      </ul>
+    {% endfor %}
+  </section>
+
+</div>
