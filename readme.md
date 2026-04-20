@@ -1,14 +1,11 @@
-
-# My Resume — YAML Driven Rendering System
+## My Resume — YAML Driven Rendering System
 
 A config-driven resume platform built on Jekyll.
 
 Single source → multiple outputs  
 (YAML → Web → Print → PDF)
 
----
-
-## ✨ Core Principles
+### ✨ Core Principles
 
 - Single source of truth → YAML
 - Single layout → all output formats
@@ -16,9 +13,26 @@ Single source → multiple outputs
 - Runtime-safe on static hosting
 - Configurable for multi-resume future
 
+### ✏ Updating Resume Content
+
+Edit:
+
+`_data/resumes/cerner-l3.yml`
+
+Commit & push → site rebuilds automatically.
+
+### 🛠 Local Development
+
+```
+bash
+bundle exec jekyll serve
+```
+
+Open: http://localhost:4000
+
 ---
 
-# 📂 Directory Structure
+## 📂 Directory Structure
 
 ```
 my-resume/
@@ -55,23 +69,21 @@ my-resume/
 
 ```
 
----
+## 🧠 Architecture
 
-# 🧠 Architecture
-
-## 1️⃣ Content Layer
+### 1️⃣ Content Layer
 
 _data/resumes/
 - Role-based resume variants (Cerner L3, consulting, compact).
 - Pure structured data — no layout logic.
 
-## 2️⃣ Control Layer
+### 2️⃣ Control Layer
 
 _data/active-resume.yml
 - Selects active resume, layout, and theme.
 - No code changes required to switch output.
 
-## 3️⃣ Render Engine
+### 3️⃣ Render Engine
 
 _layouts/resume-engine.html
 - Responsible for:
@@ -81,7 +93,7 @@ _layouts/resume-engine.html
     - attaching theme and print/pdf stuff
 - Acts as the system controller.
 
-## 4️⃣ Layout Layer
+### 4️⃣ Layout Layer
 
 _includes/resume-layouts/
 - Pure HTML structure.
@@ -89,7 +101,7 @@ _includes/resume-layouts/
     - two-column layout (future variants)
 - No content knowledge.
 
-## 5️⃣ Styling Layer
+### 5️⃣ Styling Layer
 
 - Visual styling only.
 - Layout-agnostic.
@@ -100,17 +112,13 @@ assets/css/base.css
 assets/themes/
 - switchable visual themes
 
----
+## 🖥 Output Modes
 
-# 🖥 Output Modes
-
-## 🌐 Web View
+### 🌐 Web View
 
 Rendered by Jekyll → GitHub Pages.
 
----
-
-## 🖨 Print / Save as PDF
+### 🖨 Print / Save as PDF
 
 Triggered by: `window.print()`
 
@@ -121,53 +129,25 @@ Ensures:
 - clean pagination
 - UI controls hidden
 
----
-
-## 📄 Future Build-Generated PDF
+### 📄 Future Build-Generated PDF
 
 Will reuse the same HTML + print CSS.
-
 No layout duplication required.
 
----
-
-# ⬇ PDF Access (Runtime Safe)
+### ⬇ PDF Access (Runtime Safe)
 
 Header provides:
-
 - Download PDF → shown only if file exists
 - Print / Save as PDF → always available
 
 The download button:
-
 - auto-detects `/resume.pdf`
 - never throws errors on static hosting
 
 ---
 
-# 🛠 Local Development
-
-```bash
-bundle exec jekyll serve
-```
-
-Open:
-
-http://localhost:4000
-
----
-
-# ✏ Updating Resume Content
-
-Edit:
-
-`_data/resumes/cerner-l3.yml`
-
-Commit & push → site rebuilds automatically.
-
----
-
-# 🔮 Planned: Resume Deployment Pipeline
+## Work In Progress
+### 🔮 Planned: Resume Deployment Pipeline
 
 Future GitHub Actions flow:
 
@@ -179,9 +159,7 @@ build site
 
 No PDF stored in repository.
 
----
-
-# 🚀 System Evolution
+### 🚀 System Evolution
 
 **v1 — Resume Engine**
 
@@ -201,9 +179,7 @@ No PDF stored in repository.
 - Artifact-based Pages deployment
 - Zero binary commits
 
----
-
-# 🎯 Long-Term Vision
+### 🎯 Long-Term Vision
 
 This repository is not just a resume.
 
