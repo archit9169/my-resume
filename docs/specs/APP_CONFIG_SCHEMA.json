@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "docs/specs/APP_CONFIG_SCHEMA.json",
+  "title": "App Config Schema",
+  "description": "Canonical structure for _data/app_config.yml.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "selected_resume",
+    "selected_template",
+    "feature_flags",
+    "templates"
+  ],
+  "properties": {
+    "selected_resume": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "Slug for the active resume under _data/resumes/."
+    },
+    "selected_template": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "Slug for the active template under _templates/."
+    },
+    "feature_flags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pdf_download_enabled"
+      ],
+      "properties": {
+        "pdf_download_enabled": {
+          "type": "boolean",
+          "description": "Controls whether the app bar can expose the PDF download affordance when resume.pdf exists."
+        }
+      }
+    },
+    "templates": {
+      "type": "object",
+      "description": "Per-template overrides keyed by template slug.",
+      "propertyNames": {
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/template_override"
+      }
+    }
+  },
+  "$defs": {
+    "template_override": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "app_bar_enabled",
+        "default_theme"
+      ],
+      "properties": {
+        "app_bar_enabled": {
+          "type": "boolean",
+          "description": "Whether the template should be shown in the app bar."
+        },
+        "default_theme": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "description": "Override theme slug for this template, or null to keep the base theme active."
+        }
+      }
+    }
+  }
+}

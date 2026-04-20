@@ -1,99 +1,40 @@
-## My Resume — Data-First Resume System (Jekyll + YAML)
+# My Resume - Data-First Resume System (Jekyll + YAML)
 
-A system for rendering structured resume data through interchangeable templates.
+A system for rendering structured resume data through reusable templates.
 
-Write your resume once in YAML → render it with multiple templates → export the same output to web and PDF.
+Write your resume once in YAML, render it through named templates, and drive the same output to web, print, and PDF-oriented workflows.
 
-Single source → multiple outputs (YAML → Web → Print → PDF)
+Single source -> multiple outputs.
 
-## ✨ Core Principles
+## Getting Started
 
-- **Single Source Content Model**  
-  Resume data is independent of layout and format, and the same content powers every template and output.
+1. Add your resume data like `_data/resumes/my-resume.yml`.
+2. Update the active resume and template inside `_data/app_config.yml`.
 
-- **Config-Driven Variant Selection**  
-  A central configuration selects the default active resume and template, while allowing multiple resume versions to coexist.
-
-- **Composable Template Architecture**  
-  Layout and theme combine to render the same data in different visual designs without altering the content.
-
-- **Web ↔ Print Output Parity**  
-  The same HTML produces both the live site and the PDF output.
-
-- **Artifact-Free Static Deployment**  
-  Build outputs are generated at deploy time and the system runs fully on GitHub Pages without a backend.
-
-## 🚀 Getting Started
-
-1️⃣ Fork the repository → Enable gitHub pages.
-
-2️⃣ Add your resume like `_data/resumes/my-resume.yml`
-
-3️⃣ Set your default active resume & template in `_data/app_config.yml`
-
-````yaml
-default_resume: my-resume
-default_template: classic
-````
-
-4️⃣ Commit & push → Github site rebuilds automatically.
-
-🖨 Export to PDF → Print and then save as pdf.
-
-## 📚 Documentation
-
-- [Overview](docs/OVERVIEW.md)
-- [Architecture](docs/ARCHITECTURE.md)
-  - [Request → Rendering Flow](docs/architecture/RENDERING_FLOW.md)
-  - [File and Directory Structure](docs/architecture/DIRECTORY_STRUCTURE.md)
-- [Templates, Layouts & Themes](docs/TEMPLATES.md)
-- [Resume Content](docs/RESUMES.md)
-
----
-
-## Work In Progress
-
-### 🔮 Planned: Resume Deployment Pipeline
-
-Future GitHub Actions flow:
-
-```
-build site
-→ generate PDF from HTML
-→ deploy together
+```yml
+selected_resume: my-resume
+selected_template: classic
 ```
 
-No PDF stored in repository.
+3. Preview `/` for the configured default render, or open `/templates/classic/` to preview a template route directly.
+4. If you are deploying through GitHub Pages, enable Pages once for the repository, then push to `main`.
 
-### 🚀 System Evolution
+`deploy_site.yml` handles the site build and publish flow.
 
-**v1 — Data-First Content Model**
+Export to PDF with browser print / save as PDF, or run `deploy_with_pdf.yml` for the manual PDF artifact workflow.
 
-- Structured YAML as the single source of truth
-- Config-driven default rendering
-- Multiple resume variants
-- Template-based presentation
+For the full setup and extension guide for resumes, app config, templates, and theme overrides, see [Getting Started](docs/GETTING_STARTED.md).
 
-**v2 — Unified Output Pipeline**
+## How It Works
 
-- Print stylesheet for A4 export
-- Web ↔ print layout parity
-- Runtime-safe PDF controls
+The engine reads `_data/app_config.yml` to select the active resume and template, loads structured content from `_data/resumes/`, resolves the routeable template manifest from `_templates/`, and then renders that content through a co-located template pack plus shared system assets.
 
-**v3 — Artifact-Free Deployment Pipeline**
+The same rendered HTML drives the live site, browser print / save as PDF, and the manual PDF artifact workflow. `/` renders the configured defaults, `/templates/<template>/` renders a template route through the same engine, `?template=<template>` redirects to the matching route, and `?theme=<theme>` switches the active view theme for the current template.
 
-- HTML → PDF during build
-- Artifact-based GitHub Pages deployment
-- Zero binary commits
+For the full walkthrough of the render flow, repository structure, and runtime behavior, see [How It Works](docs/HOW_IT_WORKS.md).
 
-### 🎯 Long-Term Vision
+## Future Plans
 
-At its core, this is a **data-first content rendering system** for static hosting, where structured content is authored once and transformed through a unified pipeline.
+Roadmap and planned capabilities live in [Future Directions](docs/FUTURE_DIRECTIONS.md).
 
-It is capable of:
-
-- storing multiple resume variants  
-- rendering them through multiple templates  
-- exporting them to multiple output formats  
-
-from a single structured data source — without changing the content model and without duplicating content or presentation logic.
+This includes future resume/template expansion, PDF pipeline evolution, and the longer-term direction for the system.

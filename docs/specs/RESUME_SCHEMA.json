@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "docs/specs/RESUME_SCHEMA.json",
+  "title": "Resume Schema",
+  "description": "Canonical structure for _data/resumes/*.yml. This schema documents the supported section shapes used by the engine today and can become the source of truth if resume validation is added later.",
+  "type": "object",
+  "required": [
+    "basics"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "basics": {
+      "$ref": "#/$defs/basics"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/skill_group"
+      }
+    },
+    "experience": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/experience_entry"
+      }
+    },
+    "accomplishments": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Optional accomplishment bullets for templates that choose to render them."
+    }
+  },
+  "$defs": {
+    "basics": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "linkedin": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "github": {
+          "type": "string"
+        }
+      }
+    },
+    "skill_group": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "items"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "experience_entry": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "company",
+        "role",
+        "duration"
+      ],
+      "properties": {
+        "company": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "project": {
+          "type": "string"
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
