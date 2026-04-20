@@ -1,0 +1,206 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+body[data-template] {
+  margin: 0;
+  padding: 0 var(--body-padding-inline, 20px) var(--body-padding-bottom, 40px);
+  font-family: var(--body-font-family, Calibri, Arial, sans-serif);
+  font-size: var(--body-font-size, 14px);
+  line-height: var(--body-line-height, 1.45);
+  color: var(--body-text-color, #111111);
+  background: var(--body-background-color, #ffffff);
+}
+
+body[data-template] a {
+  color: inherit;
+}
+
+body[data-template] .page {
+  max-width: var(--page-max-width, 900px);
+  margin: var(--page-margin-top, 40px) auto var(--page-margin-bottom, 48px);
+  padding: var(--page-padding-block, 0) var(--page-padding-inline, 0);
+  background: var(--page-background-color, #ffffff);
+  border: var(--page-border-width, 0) solid var(--page-border-color, transparent);
+  border-radius: var(--page-border-radius, 0);
+  box-shadow: var(--page-shadow, 0 0 0 transparent);
+}
+
+body[data-template] .resume-header {
+  display: grid;
+  gap: var(--header-gap, 8px);
+  text-align: center;
+}
+
+body[data-template] .resume-name {
+  margin: 0;
+  font-family: var(--name-font-family, var(--heading-font-family, Calibri, Arial, sans-serif));
+  font-size: var(--name-font-size, 26px);
+  font-weight: var(--name-font-weight, 700);
+  line-height: 1.15;
+}
+
+body[data-template] .resume-title {
+  color: var(--title-color, var(--body-muted-color, #4d4d4d));
+  font-size: var(--title-font-size, 14px);
+}
+
+body[data-template] .resume-contact {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: var(--contact-row-gap, 4px);
+  color: var(--contact-color, var(--body-muted-color, #4d4d4d));
+  font-size: var(--contact-font-size, 13px);
+}
+
+body[data-template] .resume-contact-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+body[data-template] .resume-contact-item + .resume-contact-item::before {
+  content: "|";
+  margin: 0 var(--contact-separator-gap, 10px);
+  color: var(--contact-color, var(--body-muted-color, #4d4d4d));
+}
+
+body[data-template] .resume-section + .resume-section {
+  margin-top: var(--section-gap, 26px);
+}
+
+body[data-template] .section-title {
+  margin: 0 0 var(--section-title-gap, 6px);
+  padding-bottom: var(--section-title-padding-bottom, 3px);
+  font-family: var(--section-title-font-family, var(--heading-font-family, Calibri, Arial, sans-serif));
+  font-size: var(--section-title-font-size, 16px);
+  font-weight: var(--section-title-font-weight, 700);
+  color: var(--section-title-color, var(--accent-color, #000000));
+  border-bottom: var(--section-title-border-width, 2px) solid var(--section-title-border-color, var(--section-title-color, var(--accent-color, #000000)));
+}
+
+body[data-template] [data-slot="summary"] .section-title {
+  font-size: var(--summary-title-font-size, var(--section-title-font-size, 16px));
+  color: var(--summary-title-color, var(--section-title-color, var(--accent-color, #000000)));
+  border-bottom-color: var(--summary-title-border-color, var(--section-title-border-color, var(--section-title-color, var(--accent-color, #000000))));
+}
+
+body[data-template] [data-slot="skills"] .section-title {
+  font-size: var(--skills-title-font-size, var(--section-title-font-size, 16px));
+  color: var(--skills-title-color, var(--section-title-color, var(--accent-color, #000000)));
+  border-bottom-color: var(--skills-title-border-color, var(--section-title-border-color, var(--section-title-color, var(--accent-color, #000000))));
+}
+
+body[data-template] [data-slot="experience"] .section-title {
+  font-size: var(--experience-title-font-size, var(--section-title-font-size, 16px));
+  color: var(--experience-title-color, var(--section-title-color, var(--accent-color, #000000)));
+  border-bottom-color: var(--experience-title-border-color, var(--section-title-border-color, var(--section-title-color, var(--accent-color, #000000))));
+}
+
+body[data-template] [data-slot="accomplishments"] .section-title {
+  font-size: var(--accomplishments-title-font-size, var(--section-title-font-size, 16px));
+  color: var(--accomplishments-title-color, var(--section-title-color, var(--accent-color, #000000)));
+  border-bottom-color: var(--accomplishments-title-border-color, var(--section-title-border-color, var(--section-title-color, var(--accent-color, #000000))));
+}
+
+body[data-template] .resume-copy {
+  margin: 0;
+}
+
+body[data-template] .skill-list {
+  display: grid;
+  gap: var(--skills-row-gap, 6px);
+}
+
+body[data-template] .skill-row {
+  display: grid;
+  grid-template-columns: minmax(0, var(--skills-label-width, 220px)) minmax(0, 1fr);
+  column-gap: var(--skills-column-gap, 18px);
+  align-items: start;
+}
+
+body[data-template] .skill-label {
+  font-weight: var(--skills-label-font-weight, 700);
+}
+
+body[data-template] .skill-items {
+  min-width: 0;
+}
+
+body[data-template] .experience-list {
+  display: grid;
+  gap: var(--experience-gap, 14px);
+}
+
+body[data-template] .experience-item {
+  display: grid;
+  gap: var(--experience-item-gap, 6px);
+}
+
+body[data-template] .job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--experience-header-gap, 20px);
+}
+
+body[data-template] .job-title-group {
+  min-width: 0;
+}
+
+body[data-template] .job-company {
+  font-weight: var(--experience-company-font-weight, 700);
+}
+
+body[data-template] .job-role,
+body[data-template] .job-project {
+  margin-top: var(--experience-detail-gap, 2px);
+}
+
+body[data-template] .job-meta {
+  flex: 0 0 auto;
+  text-align: var(--experience-meta-align, right);
+  white-space: nowrap;
+  color: var(--experience-meta-color, var(--body-muted-color, #4d4d4d));
+  font-size: var(--experience-meta-font-size, var(--meta-font-size, 13px));
+}
+
+body[data-template] .job-points,
+body[data-template] .accomplishment-list {
+  margin: 0;
+  padding-left: var(--experience-points-indent, 20px);
+}
+
+body[data-template] .job-points li + li,
+body[data-template] .accomplishment-list li + li {
+  margin-top: var(--experience-points-gap, 6px);
+}
+
+@media (max-width: 720px) {
+  body[data-template] {
+    --body-padding-inline: var(--mobile-body-padding-inline, 14px);
+    --page-margin-top: var(--mobile-page-margin-top, 24px);
+    --page-margin-bottom: var(--mobile-page-margin-bottom, 32px);
+  }
+
+  body[data-template] .skill-row {
+    grid-template-columns: 1fr;
+    row-gap: var(--mobile-skills-row-gap, 2px);
+  }
+
+  body[data-template] .job-header {
+    flex-direction: column;
+    gap: var(--mobile-experience-header-gap, 6px);
+  }
+
+  body[data-template] .job-meta {
+    text-align: left;
+    white-space: normal;
+  }
+}

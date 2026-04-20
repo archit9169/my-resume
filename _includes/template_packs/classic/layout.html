@@ -1,0 +1,106 @@
+<div class="page" data-slot="page">
+  <header class="resume-header" data-slot="header">
+    <h1 class="resume-name">{{ resume.basics.name }}</h1>
+
+    {% if resume.basics.title %}
+      <div class="resume-title" data-slot="title">{{ resume.basics.title }}</div>
+    {% endif %}
+
+    <div class="resume-contact" data-slot="contact">
+      {% if resume.basics.email %}
+        <span class="resume-contact-item">{{ resume.basics.email }}</span>
+      {% endif %}
+      {% if resume.basics.phone %}
+        <span class="resume-contact-item">{{ resume.basics.phone }}</span>
+      {% endif %}
+      {% if resume.basics.linkedin %}
+        <span class="resume-contact-item">{{ resume.basics.linkedin }}</span>
+      {% endif %}
+      {% if resume.basics.website %}
+        <span class="resume-contact-item">{{ resume.basics.website }}</span>
+      {% endif %}
+      {% if resume.basics.github %}
+        <span class="resume-contact-item">{{ resume.basics.github }}</span>
+      {% endif %}
+      {% if resume.basics.location %}
+        <span class="resume-contact-item">{{ resume.basics.location }}</span>
+      {% endif %}
+    </div>
+  </header>
+
+  {% if resume.summary != blank %}
+    <section class="resume-section" data-slot="summary">
+      <h2 class="section-title">Professional Summary</h2>
+      <p class="resume-copy">{{ resume.summary }}</p>
+    </section>
+  {% endif %}
+
+  {% if resume.skills != blank %}
+    <section class="resume-section" data-slot="skills">
+      <h2 class="section-title">Skills</h2>
+      <div class="skill-list">
+        {% for skill in resume.skills %}
+          <div class="skill-row" data-slot="skill-group">
+            <div class="skill-label">{{ skill.title }}</div>
+            <div class="skill-items" data-slot="skill-items">{{ skill.items | join: " &bull; " }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  {% if resume.experience != blank %}
+    <section class="resume-section" data-slot="experience">
+      <h2 class="section-title">Experience</h2>
+      <div class="experience-list">
+        {% for job in resume.experience %}
+          <article class="experience-item" data-slot="experience-item">
+            <div class="job-header">
+              <div class="job-title-group">
+                {% if job.company %}
+                  <div class="job-company">{{ job.company }}</div>
+                {% endif %}
+                {% if job.role %}
+                  <div class="job-role">{{ job.role }}</div>
+                {% endif %}
+                {% if job.project %}
+                  <div class="job-project">{{ job.project }}</div>
+                {% endif %}
+              </div>
+
+              {% if job.duration or job.location %}
+                <div class="job-meta" data-slot="experience-meta">
+                  {% if job.duration %}
+                    <div>{{ job.duration }}</div>
+                  {% endif %}
+                  {% if job.location %}
+                    <div>{{ job.location }}</div>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+
+            {% if job.points != blank %}
+              <ul class="job-points">
+                {% for point in job.points %}
+                  <li>{{ point }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  {% if resume.accomplishments != blank %}
+    <section class="resume-section" data-slot="accomplishments">
+      <h2 class="section-title">Accomplishments</h2>
+      <ul class="accomplishment-list">
+        {% for accomplishment in resume.accomplishments %}
+          <li>{{ accomplishment }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+</div>

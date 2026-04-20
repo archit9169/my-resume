@@ -1,0 +1,16 @@
+body[data-template="classic"][data-theme="forest"] {
+  --body-text-color: #173126;
+  --body-muted-color: #4c675c;
+  --accent-color: #1f5a43;
+
+  --section-title-color: var(--accent-color);
+  --section-title-border-color: var(--accent-color);
+
+  --page-background-color: #fcfffd;
+  --page-border-color: #d7e5dc;
+  --page-border-width: 1px;
+  --page-border-radius: 8px;
+  --page-padding-block: 18px;
+  --page-padding-inline: 24px;
+  --page-shadow: 0 12px 24px rgba(20, 52, 39, 0.08);
+}

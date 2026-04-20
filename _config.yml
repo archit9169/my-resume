@@ -4,3 +4,10 @@ collections:
   templates:
     output: true
     permalink: /templates/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: templates
+    values:
+      layout: app_engine

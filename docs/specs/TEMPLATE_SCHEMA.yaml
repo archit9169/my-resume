@@ -1,0 +1,342 @@
+version: 2
+title: Template Schema
+description: >
+  Combined schema/spec for template manifests and the shared layout/theme
+  contract used by this repository.
+reference_role:
+  summary: "Canonical contract reference for template manifests, template-pack files, hooks, tokens, and theme override rules."
+  primary_use:
+    - "Exact parity reference when template behavior changes."
+    - "Detailed authoring reference for hooks/tokens beyond the prose docs."
+  non_goal:
+    - "Primary onboarding guide."
+
+scope:
+  manifest_file: "_templates/<template>.md"
+  template_directory: "_includes/template_packs/<template>/"
+  hidden_reference_template: "basic"
+  required_template_files:
+    - "layout.html"
+    - "style.css"
+  optional_theme_paths:
+    - "themes/<theme>.css"
+  shared_assets:
+    - "assets/css/common.css"
+    - "assets/css/app_bar.css"
+    - "assets/js/app_bar.js"
+
+identity:
+  template_slug_source: "Filename without extension."
+  template_slug_case: "lower-kebab-case"
+  file_coupling:
+    - "_templates/<template>.md"
+    - "_includes/template_packs/<template>/layout.html"
+    - "_includes/template_packs/<template>/style.css"
+
+render_layers:
+  resume_render:
+    - "resume data"
+    - "layout.html"
+    - "assets/css/common.css"
+    - "style.css"
+    - "optional theme override.css"
+    - "rendered HTML"
+  app_shell:
+    - "_includes/app_bar.html"
+    - "assets/css/app_bar.css"
+    - "assets/js/app_bar.js"
+
+manifest:
+  format: "YAML front matter"
+  required_keys:
+    themes:
+      type: "array<string>"
+      required: true
+      rules:
+        - "List override themes only."
+        - "Use lower-kebab-case theme slugs."
+        - "Do not list the implicit base theme here."
+        - "An empty list means the template currently has no override themes."
+    app_bar_enabled:
+      type: "boolean"
+      required: true
+      rules:
+        - "Controls whether the template is visible in the app bar by default."
+    default_theme:
+      type: "string | null"
+      required: true
+      rules:
+        - "null means the implicit base theme stays active."
+        - "If not null, the value must match one slug from themes."
+  canonical_example: |
+    ---
+    themes:
+      - forest
+      - midnight
+    app_bar_enabled: true
+    default_theme: null
+    ---
+
+app_config_parity:
+  override_fields:
+    - "app_bar_enabled"
+    - "default_theme"
+  rule: "App config uses the same field names and wins when overrides are present."
+
+layout_contract:
+  file: "layout.html"
+  purpose: "Render structured resume data into semantic HTML for one template."
+  responsibilities:
+    - "Own section order, grouping, wrappers, and conditional section presence."
+    - "Expose the shared hook and data-slot contract."
+    - "Stay data-driven from the resume object."
+  forbidden_concerns:
+    - "App bar markup"
+    - "Print behavior"
+    - "PDF behavior"
+    - "Theme tuning"
+  required_wrapper:
+    selector: ".page"
+    rule: "Every template layout must wrap the rendered resume in one .page root element."
+  hook_surface:
+    shared_selectors:
+      - ".page"
+      - ".resume-header"
+      - ".resume-name"
+      - ".resume-title"
+      - ".resume-contact"
+      - ".resume-section"
+      - ".section-title"
+      - ".skill-list"
+      - ".skill-row"
+      - ".skill-label"
+      - ".skill-items"
+      - ".experience-list"
+      - ".experience-item"
+      - ".job-header"
+      - ".job-title-group"
+      - ".job-company"
+      - ".job-role"
+      - ".job-project"
+      - ".job-meta"
+      - ".job-points"
+      - ".accomplishment-list"
+    shared_data_slots:
+      - "page"
+      - "header"
+      - "title"
+      - "contact"
+      - "summary"
+      - "skills"
+      - "skill-group"
+      - "skill-items"
+      - "experience"
+      - "experience-item"
+      - "experience-meta"
+      - "accomplishments"
+    slot_rule: 'Use data-slot="<name>" with lower-kebab-case values when exposing semantic regions.'
+  liquid_rules:
+    - "Use lower_snake_case for local keys and helper variables."
+    - "Prefix internal helper variables with _."
+    - "Do not move app bar or global system UI into template layouts."
+  selector_reference:
+    ".page": "Required root wrapper for the rendered resume surface."
+    ".resume-header": "Header wrapper for identity and contact information."
+    ".resume-name": "Primary display name."
+    ".resume-title": "Secondary role/title line."
+    ".resume-contact": "Contact row container."
+    ".resume-section": "Shared section wrapper."
+    ".section-title": "Shared section heading hook."
+    ".skill-list": "Skills section list wrapper."
+    ".skill-row": "One skill group row."
+    ".skill-label": "Skill-group label."
+    ".skill-items": "Skill-group item list."
+    ".experience-list": "Experience section list wrapper."
+    ".experience-item": "One experience entry."
+    ".job-header": "Header row for role/company/meta."
+    ".job-title-group": "Left-side role/company grouping."
+    ".job-company": "Company label."
+    ".job-role": "Role label."
+    ".job-project": "Optional project label."
+    ".job-meta": "Duration/location metadata container."
+    ".job-points": "Bullet list for experience points."
+    ".accomplishment-list": "Bullet list for accomplishment items."
+  data_slot_reference:
+    "page": "Root rendered resume surface."
+    "header": "Resume identity header."
+    "title": "Optional title sub-region."
+    "contact": "Contact-information region."
+    "summary": "Summary section."
+    "skills": "Skills section."
+    "skill-group": "One skill group within the skills section."
+    "skill-items": "Rendered items for one skill group."
+    "experience": "Experience section."
+    "experience-item": "One experience entry."
+    "experience-meta": "Duration/location metadata block."
+    "accomplishments": "Optional accomplishments section."
+
+style_contract:
+  common_css:
+    file: "assets/css/common.css"
+    responsibilities:
+      - "Own shared resume hook selectors."
+      - "Own shared screen-layout rules."
+      - "Own shared responsive resume behavior."
+      - "Consume tokens through fallback chains."
+    forbidden_concerns:
+      - "Print behavior"
+      - "PDF behavior"
+      - "App bar styling"
+  template_style:
+    file: "style.css"
+    required: true
+    responsibilities:
+      - "Define the baseline token values for the template family."
+      - "Contain template-specific styling that cannot live in common.css."
+    forbidden_concerns:
+      - "App bar tokens"
+      - "Print/PDF rules"
+      - "Shared responsive rules"
+  override_themes:
+    directory: "themes/"
+    required: false
+    responsibilities:
+      - "Load after style.css."
+      - "Override tokens first."
+      - "Use selector-level overrides only when tokens are not enough."
+    selector_scope: 'Scope override selectors to body[data-template="<template>"][data-theme="<theme>"].'
+  base_theme_behavior:
+    summary:
+      - "The base theme is implicit and mandatory."
+      - "style.css is the baseline styling for the template family."
+      - "Use default_theme: null when the baseline should remain active."
+      - "Do not set default_theme to base."
+
+token_model:
+  naming_rule: "Use kebab-case CSS custom properties only."
+  styles:
+    - "Shared/global tokens for broad styling."
+    - "Section-scoped tokens where section-level control is needed."
+  override_guidance:
+    - "Prefer token overrides before selector overrides."
+    - "Base-template tokens belong in style.css."
+    - "Theme-specific token changes belong in themes/<theme>.css."
+    - "Only add a new token when an existing shared token cannot express the intended customization."
+  examples:
+    shared_global:
+      - "--body-font-size"
+      - "--section-title-font-size"
+      - "--section-title-color"
+      - "--body-text-color"
+    section_scoped:
+      - "--skills-title-font-size"
+      - "--skills-title-color"
+      - "--experience-meta-color"
+      - "--accomplishments-title-color"
+  fallback_model:
+    - "Shared selectors consume shared tokens."
+    - "Section selectors consume section-scoped tokens first, then fall back to shared tokens."
+  exposed_token_groups:
+    body_and_page:
+      purpose: "Global body, page, and shell-adjacent layout tuning for the rendered resume surface."
+      tokens:
+        - "--body-font-family"
+        - "--body-font-size"
+        - "--body-line-height"
+        - "--body-text-color"
+        - "--body-muted-color"
+        - "--body-background-color"
+        - "--body-padding-inline"
+        - "--body-padding-bottom"
+        - "--page-background-color"
+        - "--page-border-color"
+        - "--page-border-width"
+        - "--page-border-radius"
+        - "--page-shadow"
+        - "--page-max-width"
+        - "--page-margin-top"
+        - "--page-margin-bottom"
+        - "--page-padding-block"
+        - "--page-padding-inline"
+    heading_and_identity:
+      purpose: "Typography and spacing for name, title, contact, and shared heading presentation."
+      tokens:
+        - "--heading-font-family"
+        - "--name-font-family"
+        - "--name-font-size"
+        - "--name-font-weight"
+        - "--title-font-size"
+        - "--title-color"
+        - "--contact-font-size"
+        - "--contact-color"
+        - "--meta-font-size"
+        - "--header-gap"
+        - "--contact-row-gap"
+        - "--contact-separator-gap"
+    shared_section:
+      purpose: "Shared section spacing and section-title presentation."
+      tokens:
+        - "--accent-color"
+        - "--section-gap"
+        - "--section-title-font-family"
+        - "--section-title-font-size"
+        - "--section-title-font-weight"
+        - "--section-title-color"
+        - "--section-title-gap"
+        - "--section-title-padding-bottom"
+        - "--section-title-border-width"
+        - "--section-title-border-color"
+    summary_section:
+      purpose: "Summary-section title overrides."
+      tokens:
+        - "--summary-title-font-size"
+        - "--summary-title-color"
+        - "--summary-title-border-color"
+    skills_section:
+      purpose: "Skills-section title, grid, and label tuning."
+      tokens:
+        - "--skills-title-font-size"
+        - "--skills-title-color"
+        - "--skills-title-border-color"
+        - "--skills-label-width"
+        - "--skills-column-gap"
+        - "--skills-row-gap"
+        - "--skills-label-font-weight"
+    experience_section:
+      purpose: "Experience-section title, list spacing, metadata, and bullet-list tuning."
+      tokens:
+        - "--experience-title-font-size"
+        - "--experience-title-color"
+        - "--experience-title-border-color"
+        - "--experience-gap"
+        - "--experience-item-gap"
+        - "--experience-header-gap"
+        - "--experience-detail-gap"
+        - "--experience-company-font-weight"
+        - "--experience-meta-font-size"
+        - "--experience-meta-color"
+        - "--experience-meta-align"
+        - "--experience-points-indent"
+        - "--experience-points-gap"
+    accomplishments_section:
+      purpose: "Accomplishments-section title overrides."
+      tokens:
+        - "--accomplishments-title-font-size"
+        - "--accomplishments-title-color"
+        - "--accomplishments-title-border-color"
+    mobile_overrides:
+      purpose: "Mobile-specific layout tuning exposed through shared CSS."
+      tokens:
+        - "--mobile-body-padding-inline"
+        - "--mobile-page-margin-top"
+        - "--mobile-page-margin-bottom"
+        - "--mobile-skills-row-gap"
+        - "--mobile-experience-header-gap"
+
+naming_rules:
+  template_slug: "lower-kebab-case"
+  theme_slug: "lower-kebab-case"
+  manifest_keys: "lower_snake_case"
+  liquid_helper_variables: "prefix with _"
+  css_hooks_and_tokens: "kebab-case"
+  runtime_files: "lower_snake_case where possible"

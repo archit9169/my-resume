@@ -2,57 +2,99 @@
 layout: null
 ---
 
-{% assign app = site.data.app_config %}
+{% assign _app_config = site.data.app_config %}
+{% assign _template_settings = _app_config.templates | default: empty %}
+{% assign _selected_resume = _app_config.selected_resume %}
+{% assign _resume = site.data.resumes[_selected_resume] %}
 
-{% assign resume = site.data.resumes[app.default_resume] %}
+{% if page.collection == "templates" %}
+  {% assign _template_slug = page.slug %}
+{% else %}
+  {% assign _template_slug = _app_config.selected_template %}
+{% endif %}
 
-{% assign template_name = page.page_name | default: app.default_template %}
-
-{% assign template =
+{% assign _template =
   site.templates
-  | where: "name", template_name
+  | where: "slug", _template_slug
   | first
 %}
+{% assign _template_override = _template_settings[_template_slug] %}
+{% assign _template_root = "template_packs/" | append: _template_slug %}
+{% assign _template_layout_path = _template_root | append: "/layout.html" %}
+{% assign _template_style_path = _template_root | append: "/style.css" %}
+{% assign _available_themes = _template.themes | default: empty %}
+{% assign _default_theme = _template.default_theme %}
+{% if _template_override %}
+  {% assign _default_theme = _template_override.default_theme %}
+{% endif %}
+{% assign _resolved_theme = _default_theme | default: "base" %}
+
+{% assign _configuration_error = nil %}
+{% if _resume == nil %}
+  {% assign _configuration_error = "resume" %}
+{% elsif _template == nil %}
+  {% assign _configuration_error = "template" %}
+{% endif %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
   <meta charset="UTF-8">
-  <title>{{ resume.basics.name }}</title>
+  <title>{{ _resume.basics.name | default: "Resume Engine" }}</title>
 
-  <!-- BASE -->
-  <link rel="stylesheet" href="{{ '/assets/css/base.css' | relative_url }}">
-  <link rel="stylesheet" href="{{ '/assets/css/print.css' | relative_url }}" media="print">
-
-  <!-- THEME -->
-  <link rel="stylesheet"
-        href="{{ '/assets/themes/' | append: template.page_theme | append: '.css' | relative_url }}">
-
-  <!-- APP BAR CONTROLLER -->
+  <link rel="stylesheet" href="{{ '/assets/css/common.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/app_bar.css' | relative_url }}">
-  <script src="{{ '/assets/js/app_ui.js' | relative_url }}" defer></script>
 
-  <!-- TEMPLATE REGISTRY FOR RUNTIME -->
-  <script>
-    window.APP_TEMPLATES = {
-      {% for t in site.templates %}
-      "{{ t.name }}": {
-        layout: "{{ t.page_layout }}",
-        theme: "{{ t.page_theme }}"
-      }{% unless forloop.last %},{% endunless %}
-      {% endfor %}
-    };
-  </script>
+  {% if _template %}
+    {% capture _template_style_css %}{% include {{ _template_style_path }} %}{% endcapture %}
+    <style>
+{{ _template_style_css | strip }}
+    </style>
 
+    {% for _theme_slug in _available_themes %}
+      {% assign _template_theme_path = _template_root | append: "/themes/" | append: _theme_slug | append: ".css" %}
+      {% capture _template_theme_css %}{% include {{ _template_theme_path }} %}{% endcapture %}
+      <style>
+{{ _template_theme_css | strip }}
+      </style>
+    {% endfor %}
+  {% endif %}
+
+  <script src="{{ '/assets/js/app_bar.js' | relative_url }}" defer></script>
 </head>
 
-<body data-layout="{{ template.page_layout }}"
-      data-theme="{{ template.page_theme }}">
+<!--
+template: {{ _template_slug }}
+resolved: {% if _template %}true{% else %}false{% endif %}
+template_layout_include: {{ _template_layout_path }}
+template_style_include: {{ _template_style_path }}
+selected_resume: {{ _selected_resume }}
+selected_theme: {{ _resolved_theme }}
+page_collection: {{ page.collection }}
+page_name: {{ page.name }}
+page_slug: {{ page.slug }}
+configuration_error: {{ _configuration_error }}
+-->
 
+<body data-template="{{ _template_slug }}"
+      data-theme="{{ _resolved_theme }}">
   {% include app_bar.html %}
 
-  {% include layouts/{{ template.page_layout }}.html %}
-
+  {% if _configuration_error == "resume" %}
+    <main class="engine-error">
+      <h1>Configuration error</h1>
+      <p>Resume "{{ _selected_resume }}" could not be resolved from <code>site.data.resumes</code>.</p>
+      <p>Check <code>_data/app_config.yml</code> and the corresponding file in <code>_data/resumes/</code>.</p>
+    </main>
+  {% elsif _configuration_error == "template" %}
+    <main class="engine-error">
+      <h1>Configuration error</h1>
+      <p>Template "{{ _template_slug }}" could not be resolved from <code>site.templates</code>.</p>
+      <p>Check <code>_data/app_config.yml</code> or the current entry document in <code>_templates/</code>.</p>
+    </main>
+  {% else %}
+    {% assign resume = _resume %}
+    {% include {{ _template_layout_path }} %}
+  {% endif %}
 </body>
 </html>
