@@ -5,15 +5,18 @@
 
 @media print {
 
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
   html, body {
-    width: 210mm;
-    height: 297mm;
     font-size: 11pt;
     background: #fff;
   }
 
   .page {
-    width: 100%;
+    max-width: 100%;
     margin: 0;
     box-shadow: none;
   }
@@ -23,7 +26,8 @@
     color: inherit;
   }
 
-  .no-print {
+  .no-print,
+  .no-print * {
     display: none !important;
   }
 
